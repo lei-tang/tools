@@ -1,0 +1,2649 @@
+Warning! error execing into istio-pilot-f6c57d7cf-h7b56/istio-system discovery container: gc 1 @0.016s 7%: 0.015+1.7+1.2 ms clock, 0.060+0.35/0.64/1.9+5.1 ms cpu, 4->4->2 MB, 5 MB goal, 4 P
+gc 2 @0.027s 11%: 0.015+1.7+1.7 ms clock, 0.060+0.21/1.0/2.3+7.1 ms cpu, 4->4->2 MB, 5 MB goal, 4 P
+gc 3 @0.062s 8%: 0.024+1.9+1.8 ms clock, 0.096+0/1.5/3.3+7.3 ms cpu, 5->5->3 MB, 6 MB goal, 4 P
+
+Clusters Match
+--- Pilot Listeners
++++ Envoy Listeners
+@@ -1,2639 +1,3 @@
+ {
+-   "dynamicActiveListeners": [
+-      {
+-         "listener": {
+-            "name": "0.0.0.0_15004",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 15004
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "0.0.0.0_15004",
+-                           "rds": {
+-                              "configSource": {
+-                                 "ads": {
+ 
+-                                 }
+-                              },
+-                              "routeConfigName": "15004"
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-                                          "disableCheckCalls": true
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "outbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "source.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    },
+-                                    "forwardAttributes": {
+-                                       "attributes": {
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "operationName": "EGRESS",
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "0.0.0.0_15010",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 15010
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "0.0.0.0_15010",
+-                           "rds": {
+-                              "configSource": {
+-                                 "ads": {
+-
+-                                 }
+-                              },
+-                              "routeConfigName": "15010"
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-                                          "disableCheckCalls": true
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "outbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "source.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    },
+-                                    "forwardAttributes": {
+-                                       "attributes": {
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "operationName": "EGRESS",
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "0.0.0.0_15014",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 15014
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "0.0.0.0_15014",
+-                           "rds": {
+-                              "configSource": {
+-                                 "ads": {
+-
+-                                 }
+-                              },
+-                              "routeConfigName": "15014"
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-                                          "disableCheckCalls": true
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "outbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "source.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    },
+-                                    "forwardAttributes": {
+-                                       "attributes": {
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "operationName": "EGRESS",
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "0.0.0.0_80",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 80
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "0.0.0.0_80",
+-                           "rds": {
+-                              "configSource": {
+-                                 "ads": {
+-
+-                                 }
+-                              },
+-                              "routeConfigName": "80"
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-                                          "disableCheckCalls": true
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "outbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "source.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    },
+-                                    "forwardAttributes": {
+-                                       "attributes": {
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "operationName": "EGRESS",
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "0.0.0.0_8000",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 8000
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "0.0.0.0_8000",
+-                           "rds": {
+-                              "configSource": {
+-                                 "ads": {
+-
+-                                 }
+-                              },
+-                              "routeConfigName": "8000"
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-                                          "disableCheckCalls": true
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "outbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "source.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    },
+-                                    "forwardAttributes": {
+-                                       "attributes": {
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "operationName": "EGRESS",
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "0.0.0.0_8060",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 8060
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "0.0.0.0_8060",
+-                           "rds": {
+-                              "configSource": {
+-                                 "ads": {
+-
+-                                 }
+-                              },
+-                              "routeConfigName": "8060"
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-                                          "disableCheckCalls": true
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "outbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "source.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    },
+-                                    "forwardAttributes": {
+-                                       "attributes": {
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "operationName": "EGRESS",
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "0.0.0.0_8080",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 8080
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "0.0.0.0_8080",
+-                           "rds": {
+-                              "configSource": {
+-                                 "ads": {
+-
+-                                 }
+-                              },
+-                              "routeConfigName": "8080"
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-                                          "disableCheckCalls": true
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "outbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "source.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    },
+-                                    "forwardAttributes": {
+-                                       "attributes": {
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "operationName": "EGRESS",
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "0.0.0.0_9090",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 9090
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "0.0.0.0_9090",
+-                           "rds": {
+-                              "configSource": {
+-                                 "ads": {
+-
+-                                 }
+-                              },
+-                              "routeConfigName": "9090"
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-                                          "disableCheckCalls": true
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "outbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "source.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    },
+-                                    "forwardAttributes": {
+-                                       "attributes": {
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "operationName": "EGRESS",
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "0.0.0.0_9091",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 9091
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "0.0.0.0_9091",
+-                           "rds": {
+-                              "configSource": {
+-                                 "ads": {
+-
+-                                 }
+-                              },
+-                              "routeConfigName": "9091"
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-                                          "disableCheckCalls": true
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "outbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "source.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    },
+-                                    "forwardAttributes": {
+-                                       "attributes": {
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "operationName": "EGRESS",
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "0.0.0.0_9901",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 9901
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "0.0.0.0_9901",
+-                           "rds": {
+-                              "configSource": {
+-                                 "ads": {
+-
+-                                 }
+-                              },
+-                              "routeConfigName": "9901"
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-                                          "disableCheckCalls": true
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "outbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "source.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    },
+-                                    "forwardAttributes": {
+-                                       "attributes": {
+-                                          "source.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "operationName": "EGRESS",
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.24.2.59_15020",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.24.2.59",
+-                  "portValue": 15020
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "inbound|15020|mgmt-15020|mgmtCluster",
+-                           "cluster": "inbound|15020|mgmt-15020|mgmtCluster",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.24.2.59_80",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.24.2.59",
+-                  "portValue": 80
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "tlsContext": {
+-                     "commonTlsContext": {
+-                        "tlsCertificateSdsSecretConfigs": [
+-                           {
+-                              "name": "default",
+-                              "sdsConfig": {
+-                                 "apiConfigSource": {
+-                                    "apiType": "GRPC",
+-                                    "grpcServices": [
+-                                       {
+-                                          "googleGrpc": {
+-                                             "targetUri": "unix:/var/run/sds/uds_path",
+-                                             "channelCredentials": {
+-                                                "localCredentials": {
+-
+-                                                }
+-                                             },
+-                                             "callCredentials": [
+-                                                {
+-                                                   "fromPlugin": {
+-                                                      "name": "envoy.grpc_credentials.file_based_metadata",
+-                                                      "typedConfig": {
+-                                                         "@type": "type.googleapis.com/envoy.config.grpc_credential.v2alpha.FileBasedMetadataConfig",
+-                                                         "secretData": {
+-                                                            "filename": "/etc/sdstoken/sdstoken"
+-                                                         },
+-                                                         "headerKey": "istio_sds_credentail_header-bin"
+-                                                      }
+-                                                   }
+-                                                }
+-                                             ],
+-                                             "statPrefix": "sdsstat",
+-                                             "credentialsFactoryName": "envoy.grpc_credentials.file_based_metadata"
+-                                          }
+-                                       }
+-                                    ]
+-                                 }
+-                              }
+-                           }
+-                        ],
+-                        "combinedValidationContext": {
+-                           "defaultValidationContext": {
+-
+-                           },
+-                           "validationContextSdsSecretConfig": {
+-                              "name": "ROOTCA",
+-                              "sdsConfig": {
+-                                 "apiConfigSource": {
+-                                    "apiType": "GRPC",
+-                                    "grpcServices": [
+-                                       {
+-                                          "googleGrpc": {
+-                                             "targetUri": "unix:/var/run/sds/uds_path",
+-                                             "channelCredentials": {
+-                                                "localCredentials": {
+-
+-                                                }
+-                                             },
+-                                             "callCredentials": [
+-                                                {
+-                                                   "fromPlugin": {
+-                                                      "name": "envoy.grpc_credentials.file_based_metadata",
+-                                                      "typedConfig": {
+-                                                         "@type": "type.googleapis.com/envoy.config.grpc_credential.v2alpha.FileBasedMetadataConfig",
+-                                                         "secretData": {
+-                                                            "filename": "/etc/sdstoken/sdstoken"
+-                                                         },
+-                                                         "headerKey": "istio_sds_credentail_header-bin"
+-                                                      }
+-                                                   }
+-                                                }
+-                                             ],
+-                                             "statPrefix": "sdsstat",
+-                                             "credentialsFactoryName": "envoy.grpc_credentials.file_based_metadata"
+-                                          }
+-                                       }
+-                                    ]
+-                                 }
+-                              }
+-                           }
+-                        },
+-                        "alpnProtocols": [
+-                           "h2",
+-                           "http/1.1"
+-                        ]
+-                     },
+-                     "requireClientCertificate": true
+-                  },
+-                  "filters": [
+-                     {
+-                        "name": "envoy.http_connection_manager",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+-                           "statPrefix": "10.24.2.59_80",
+-                           "routeConfig": {
+-                              "name": "inbound|8000|http|httpbin.default.svc.cluster.local",
+-                              "virtualHosts": [
+-                                 {
+-                                    "name": "inbound|http|8000",
+-                                    "domains": [
+-                                       "*"
+-                                    ],
+-                                    "routes": [
+-                                       {
+-                                          "match": {
+-                                             "prefix": "/"
+-                                          },
+-                                          "route": {
+-                                             "cluster": "inbound|8000|http|httpbin.default.svc.cluster.local",
+-                                             "timeout": "0s",
+-                                             "maxGrpcTimeout": "0s"
+-                                          },
+-                                          "decorator": {
+-                                             "operation": "httpbin.default.svc.cluster.local:8000/*"
+-                                          },
+-                                          "typedPerFilterConfig": {
+-                                             "mixer": {
+-                                                "@type": "type.googleapis.com/istio.mixer.v1.config.client.ServiceConfig",
+-                                                "mixerAttributes": {
+-                                                   "attributes": {
+-                                                      "destination.service.host": {
+-                                                         "stringValue": "httpbin.default.svc.cluster.local"
+-                                                      },
+-                                                      "destination.service.name": {
+-                                                         "stringValue": "httpbin"
+-                                                      },
+-                                                      "destination.service.namespace": {
+-                                                         "stringValue": "default"
+-                                                      },
+-                                                      "destination.service.uid": {
+-                                                         "stringValue": "istio://default/services/httpbin"
+-                                                      }
+-                                                   }
+-                                                }
+-                                             }
+-                                          }
+-                                       }
+-                                    ]
+-                                 }
+-                              ],
+-                              "validateClusters": false
+-                           },
+-                           "httpFilters": [
+-                              {
+-                                 "name": "istio_authn",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.envoy.config.filter.http.authn.v2alpha1.FilterConfig",
+-                                    "policy": {
+-                                       "peers": [
+-                                          {
+-                                             "mtls": {
+-
+-                                             }
+-                                          }
+-                                       ]
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "mixer",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/istio.mixer.v1.config.client.HttpClientConfig",
+-                                    "transport": {
+-                                       "networkFailPolicy": {
+-                                          "policy": "FAIL_CLOSE"
+-                                       },
+-                                       "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                                       "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                                    },
+-                                    "serviceConfigs": {
+-                                       "default": {
+-
+-                                       }
+-                                    },
+-                                    "defaultDestinationService": "default",
+-                                    "mixerAttributes": {
+-                                       "attributes": {
+-                                          "context.reporter.kind": {
+-                                             "stringValue": "inbound"
+-                                          },
+-                                          "context.reporter.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          },
+-                                          "destination.ip": {
+-                                             "bytesValue": "AAAAAAAAAAAAAP//ChgCOw=="
+-                                          },
+-                                          "destination.namespace": {
+-                                             "stringValue": "default"
+-                                          },
+-                                          "destination.port": {
+-                                             "int64Value": "80"
+-                                          },
+-                                          "destination.uid": {
+-                                             "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                          }
+-                                       }
+-                                    }
+-                                 }
+-                              },
+-                              {
+-                                 "name": "envoy.cors"
+-                              },
+-                              {
+-                                 "name": "envoy.fault"
+-                              },
+-                              {
+-                                 "name": "envoy.router"
+-                              }
+-                           ],
+-                           "tracing": {
+-                              "clientSampling": {
+-                                 "value": 100
+-                              },
+-                              "randomSampling": {
+-                                 "value": 1
+-                              },
+-                              "overallSampling": {
+-                                 "value": 100
+-                              }
+-                           },
+-                           "serverName": "istio-envoy",
+-                           "streamIdleTimeout": "0s",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ],
+-                           "useRemoteAddress": false,
+-                           "generateRequestId": true,
+-                           "forwardClientCertDetails": "APPEND_FORWARD",
+-                           "setCurrentClientCertDetails": {
+-                              "subject": true,
+-                              "dns": true,
+-                              "uri": true
+-                           },
+-                           "upgradeConfigs": [
+-                              {
+-                                 "upgradeType": "websocket"
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            },
+-            "listenerFilters": [
+-               {
+-                  "name": "envoy.listener.tls_inspector"
+-               }
+-            ]
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.240.1_443",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.240.1",
+-                  "portValue": 443
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "kubernetes.default.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "kubernetes"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://default/services/kubernetes"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|443||kubernetes.default.svc.cluster.local",
+-                           "cluster": "outbound|443||kubernetes.default.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.242.219_443",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.242.219",
+-                  "portValue": 443
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-galley.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-galley"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-galley"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|443||istio-galley.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|443||istio-galley.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.246.163_15029",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.246.163",
+-                  "portValue": 15029
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-ingressgateway.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-ingressgateway"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-ingressgateway"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|15029||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|15029||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.246.163_15030",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.246.163",
+-                  "portValue": 15030
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-ingressgateway.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-ingressgateway"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-ingressgateway"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|15030||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|15030||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.246.163_15031",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.246.163",
+-                  "portValue": 15031
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-ingressgateway.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-ingressgateway"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-ingressgateway"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|15031||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|15031||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.246.163_15032",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.246.163",
+-                  "portValue": 15032
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-ingressgateway.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-ingressgateway"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-ingressgateway"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|15032||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|15032||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.246.163_15443",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.246.163",
+-                  "portValue": 15443
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-ingressgateway.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-ingressgateway"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-ingressgateway"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|15443||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|15443||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.246.163_31400",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.246.163",
+-                  "portValue": 31400
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-ingressgateway.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-ingressgateway"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-ingressgateway"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|31400||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|31400||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.246.163_443",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.246.163",
+-                  "portValue": 443
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-ingressgateway.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-ingressgateway"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-ingressgateway"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|443||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|443||istio-ingressgateway.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.247.140_15011",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.247.140",
+-                  "portValue": 15011
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-pilot.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-pilot"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-pilot"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|15011||istio-pilot.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|15011||istio-pilot.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.248.186_443",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.248.186",
+-                  "portValue": 443
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-sidecar-injector.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-sidecar-injector"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-sidecar-injector"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|443||istio-sidecar-injector.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|443||istio-sidecar-injector.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.250.17_42422",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.250.17",
+-                  "portValue": 42422
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-telemetry.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-telemetry"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-telemetry"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|42422||istio-telemetry.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|42422||istio-telemetry.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.255.208_15443",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.255.208",
+-                  "portValue": 15443
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-egressgateway.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-egressgateway"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-egressgateway"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|15443||istio-egressgateway.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|15443||istio-egressgateway.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "10.27.255.208_443",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "10.27.255.208",
+-                  "portValue": 443
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "mixer",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/istio.mixer.v1.config.client.TcpClientConfig",
+-                           "transport": {
+-                              "networkFailPolicy": {
+-                                 "policy": "FAIL_CLOSE"
+-                              },
+-                              "checkCluster": "outbound|9091||istio-policy.istio-system.svc.cluster.local",
+-                              "reportCluster": "outbound|9091||istio-telemetry.istio-system.svc.cluster.local"
+-                           },
+-                           "mixerAttributes": {
+-                              "attributes": {
+-                                 "context.reporter.kind": {
+-                                    "stringValue": "outbound"
+-                                 },
+-                                 "context.reporter.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 },
+-                                 "destination.service.host": {
+-                                    "stringValue": "istio-egressgateway.istio-system.svc.cluster.local"
+-                                 },
+-                                 "destination.service.name": {
+-                                    "stringValue": "istio-egressgateway"
+-                                 },
+-                                 "destination.service.namespace": {
+-                                    "stringValue": "istio-system"
+-                                 },
+-                                 "destination.service.uid": {
+-                                    "stringValue": "istio://istio-system/services/istio-egressgateway"
+-                                 },
+-                                 "source.namespace": {
+-                                    "stringValue": "default"
+-                                 },
+-                                 "source.uid": {
+-                                    "stringValue": "kubernetes://httpbin-78cb9d6948-kqbn2.default"
+-                                 }
+-                              }
+-                           },
+-                           "disableCheckCalls": true
+-                        }
+-                     },
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "outbound|443||istio-egressgateway.istio-system.svc.cluster.local",
+-                           "cluster": "outbound|443||istio-egressgateway.istio-system.svc.cluster.local",
+-                           "accessLog": [
+-                              {
+-                                 "name": "envoy.file_access_log",
+-                                 "typedConfig": {
+-                                    "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+-                                    "path": "/dev/stdout",
+-                                    "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME%\n"
+-                                 }
+-                              }
+-                           ]
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "deprecatedV1": {
+-               "bindToPort": false
+-            }
+-         }
+-      },
+-      {
+-         "listener": {
+-            "name": "virtual",
+-            "address": {
+-               "socketAddress": {
+-                  "address": "0.0.0.0",
+-                  "portValue": 15001
+-               }
+-            },
+-            "filterChains": [
+-               {
+-                  "filters": [
+-                     {
+-                        "name": "envoy.tcp_proxy",
+-                        "typedConfig": {
+-                           "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+-                           "statPrefix": "BlackHoleCluster",
+-                           "cluster": "BlackHoleCluster"
+-                        }
+-                     }
+-                  ]
+-               }
+-            ],
+-            "useOriginalDst": true
+-         }
+-      }
+-   ]
+ }
+
+Routes Match

@@ -8,13 +8,17 @@ Let the root directory of this repo be ROOT-OF-REPO.
   cd ROOT-OF-REPO/perf/istio
 Run the following command. You may replace release-1.1-20190208-09-16
 in the command to the release to test.
-  DNS_DOMAIN=your-example-domain VALUES=values-istio-sds-auth.yaml ./setup.sh release-1.1-20190208-09-16
+  DNS_DOMAIN=your-example-domain VALUES=values-istio-sds-vault.yaml ./setup.sh release-1.1-20190208-09-16
 After running the above script to deploy Istio, wait a moment for Istio to be ready.
 
+    helm template install/kubernetes/helm/istio --name istio \
+    --namespace istio-system --values values-istio-sds-vault.yaml \
+    install/kubernetes/helm/istio >> istio-auth.yaml
+
 - Deploy an example workload that requests for certificates through SDS.
-  cd ROOT-OF-REPO/perf/sds-tests
+  cd ROOT-OF-REPO/perf/sds-tests/vault-1
 Run the following script:
-  WORKLOAD_FILE=./httpbin.yaml ./setup_test.sh
+  ISTIO_RELEASE=release-1.1-20190208-09-16 ./setup_test.sh
 Wait a moment for the deployment to be ready. Then view the logs of Node Agents.
 The Node Agents can be listed through
 the command "kubectl get pod -n istio-system | grep nodeagent".
