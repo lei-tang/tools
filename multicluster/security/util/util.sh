@@ -14,14 +14,14 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# collectResponsesWithRetries collect different responses from
+# verifyResponseSet collects different responses from
 # running a given command at most ${1} times with ${2} sleep between each run
-# until the response size reaching the specified size ${3}.
-# For example, collectResponsesWithRetries 10 1 4 myFunc param1 param2
+# and verifies that the response size reaching the specified size ${3}.
+# For example, verifyResponseSet 10 1 4 myFunc param1 param2
 # runs "myFunc param1 param2" up to 10 times with 1 second sleep in between,
 # until the response size reaching 4.
-collectResponsesWithRetries() {
-    local max_retries=${1}
+verifyResponseSet() {
+    local runs=${1}
     local sleep_sec=${2}
     local size=${3}
     local n=0
@@ -30,21 +30,67 @@ collectResponsesWithRetries() {
     shift
     shift
     shift
-    while (( $n < ${max_retries} ))
+    while (( $n < ${runs} ))
     do
       echo "RUNNING $*"
       k=$("${@}")
       vals["$k"]=1
-      if (( "${#vals[@]}" >= size )); then
+      if (( "${#vals[@]}" >= ${size} )); then
         break
       fi
       n=$(( n+1 ))
       echo "Tried $n times, sleeping ${sleep_sec} seconds and retrying..."
       sleep "${sleep_sec}"
     done
-    if (( n == max_retries ))
+    if (( $n == ${runs} ))
     then
-      die "$* does not have a response size ${size} after retrying ${max_retries} times."
+      die "$* does not have a response size ${size} after running ${runs} times."
+    fi
+    echo "Succeeded."
+}
+
+# verifyResponses verify responses from
+# running a given command containing an expected result.
+# ${1}: number of times running the given command.
+# ${2}: sleep interval between each run.
+# For example, verifyResponses 10 1 "success" myFunc param1 param2
+# runs "myFunc param1 param2" 10 times with 1 second sleep in between,
+# and verifies the response of each run contains "success".
+verifyResponses() {
+    local runs=${1}
+    local sleep_sec=${2}
+    local exp_str=${3}
+    local n=0
+    local resp=""
+    shift
+    shift
+    shift
+
+    while (( $n < ${runs} ))
+    do
+      echo "RUNNING $*"
+      resp=$("${@}" 2>&1)
+      arr=()
+      while read -r line; do
+         arr+=("$line")
+      done <<< "$resp"
+      contain="false"
+      for line in "${arr[@]}"; do
+        if [[ ${line} = *"${exp_str}"* ]]; then
+          contain="true"
+        fi
+      done
+      if [[ "${contain}" = "false" ]]; then
+        break
+      fi
+      n=$(( n+1 ))
+      echo "Ran $n times, sleeping ${sleep_sec} seconds and run again..."
+      sleep "${sleep_sec}"
+    done
+
+    if (( $n < ${runs} ))
+    then
+      die "$* does not have expected response when running ${runs} times."
     fi
     echo "Succeeded."
 }
