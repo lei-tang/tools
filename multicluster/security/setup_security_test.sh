@@ -14,6 +14,9 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+# The values of the following environmental variables should be configured
+# based on your multicluster installations (e.g., project, clusters, etc).
+
 # Configure your multicluster project ID, in which you have
 # installed Istio master+master multicluster.
 export PROJECT_ID=lt-multicluster-t2-5-15-2020

@@ -110,15 +110,14 @@ spec:
   - mtls: {}
 EOF
 
-# Wait 30 seconds for the mTLS policy to take effect
-echo "Wait 30 seconds for the mTLS policy to take effect."
-sleep 30
+# Wait 90 seconds for the mTLS policy to take effect
+echo "Wait 90 seconds for the mTLS policy to take effect."
+sleep 90
 
 # Do not exit immediately for non zero status
 set +e
 # Confirm that plain-text requests fail as mutual TLS is required for helloworld with the following command.
-# Run the command multiple times and every run should return a failure.
-verifyResponses 10 0 "command terminated with exit code 56" kubectl exec --context=$CTX_1 \
+verifyResponses 5 0 "command terminated with exit code 56" kubectl exec --context=$CTX_1 \
   $(kubectl get --context=$CTX_1 pod -n sample -l app=sleep -o jsonpath={.items..metadata.name})\
    -n sample -c istio-proxy -- curl -s helloworld.sample:5000/hello
 # Exit immediately for non zero status
@@ -157,8 +156,8 @@ kubectl apply --context=${CTX_1} \
 kubectl apply --context=${CTX_2} \
   -f ${ISTIO}/samples/httpbin/httpbin.yaml -n sample
 
-# Sleep 30 seconds for the DestinationRule and httpbin deployments to take effect.
-sleep 30
+# Sleep 90 seconds for the DestinationRule and httpbin deployments to take effect.
+sleep 90
 
 # Under mTLS, verify cross-cluster load balancing from cluster 1.
 # The response set should include those from 4 instances in all clusters.
@@ -180,14 +179,14 @@ waitForPodsInContextReady sample ${CTX_2} "2/2"
 
 # Test certificates and mTLS from sleep in cluster 1 to httpbin.
 # The presence of the X-Forwarded-Client-Cert header shows that the certificate and mutual TLS are used.
-verifyResponses 10 0 "X-Forwarded-Client-Cert" kubectl exec --context=${CTX_1} -n sample -c sleep \
+verifyResponses 5 0 "X-Forwarded-Client-Cert" kubectl exec --context=${CTX_1} -n sample -c sleep \
   $(kubectl get --context=${CTX_1} pod -n sample -l \
   app=sleep -o jsonpath='{.items[0].metadata.name}') -- curl \
   http://httpbin.sample:8000/headers -s
 
 # Test certificates and mTLS from sleep in cluster 2 to httpbin.
 # The presence of the X-Forwarded-Client-Cert header shows that the certificate and mutual TLS are used.
-verifyResponses 10 0 "X-Forwarded-Client-Cert" kubectl exec --context=${CTX_2} -n sample -c sleep \
+verifyResponses 5 0 "X-Forwarded-Client-Cert" kubectl exec --context=${CTX_2} -n sample -c sleep \
   $(kubectl get --context=${CTX_2} pod -n sample -l \
   app=sleep -o jsonpath='{.items[0].metadata.name}') -- curl \
   http://httpbin.sample:8000/headers -s
