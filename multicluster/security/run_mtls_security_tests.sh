@@ -91,23 +91,25 @@ verifyResponseSet 10 0 4 kubectl exec --context=${CTX_2} -it -n sample -c sleep 
 
 # Deploy mTLS strict policy for cluster 1 and 2
 kubectl apply --context=$CTX_1 -f - <<EOF
-apiVersion: "authentication.istio.io/v1alpha1"
-kind: "MeshPolicy"
+apiVersion: "security.istio.io/v1beta1"
+kind: "PeerAuthentication"
 metadata:
   name: "default"
+  namespace: "sample"
 spec:
-  peers:
-  - mtls: {}
+  mtls:
+    mode: STRICT
 EOF
 
 kubectl apply --context=$CTX_2 -f - <<EOF
-apiVersion: "authentication.istio.io/v1alpha1"
-kind: "MeshPolicy"
+apiVersion: "security.istio.io/v1beta1"
+kind: "PeerAuthentication"
 metadata:
   name: "default"
+  namespace: "sample"
 spec:
-  peers:
-  - mtls: {}
+  mtls:
+    mode: STRICT
 EOF
 
 # Wait 90 seconds for the mTLS policy to take effect

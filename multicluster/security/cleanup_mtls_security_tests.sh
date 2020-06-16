@@ -35,5 +35,3 @@ gcloud container clusters get-credentials ${MASTER_NAME02} --zone ${MASTER_LOCAT
 # Cleanup
 kubectl delete --context=${CTX_1} namespace sample
 kubectl delete --context=${CTX_2} namespace sample
-kubectl delete --context=${CTX_1} meshpolicy default
-kubectl delete --context=${CTX_2} meshpolicy default
