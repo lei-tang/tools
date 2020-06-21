@@ -90,6 +90,8 @@ kubectl apply --context=${CTX_2} \
 # of cluster 1 and 2 are ready. If they are not ready
 # (e.g., due to resource limits), recreate them.
 waitForPodsInContextReady authz-ns1 ${CTX_1} "2/2"
+waitForPodsInContextReady authz-ns2 ${CTX_1} "2/2"
+waitForPodsInContextReady authz-ns1 ${CTX_2} "2/2"
 waitForPodsInContextReady authz-ns2 ${CTX_2} "2/2"
 
 # Verify sleep in authz-ns1 of cluster 1 can reach the helloworld
