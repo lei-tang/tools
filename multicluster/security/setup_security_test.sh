@@ -19,12 +19,34 @@
 
 # Configure your multicluster project ID, in which you have
 # installed Istio master+master multicluster.
-export PROJECT_ID=lt-multicluster-t2-5-15-2020
+export PROJECT_ID=lt-multicluster-t1-6-16-2020
 # Configure the first cluster name in your multicluster project.
-export MASTER_NAME01=master01
+export CLUSTER_1=master01
 # Configure the first cluster location in your multicluster project.
-export MASTER_LOCATION01=us-central1-a
+export LOCATION_1=us-central1-a
 # Configure the second cluster name in your multicluster project.
-export MASTER_NAME02=master02
+export CLUSTER_2=master02
 # Configure the second cluster location in your multicluster project.
-export MASTER_LOCATION02=us-central1-a
+export LOCATION_2=us-central1-a
+
+# Configure the download method for Istio release.
+# Two methods are supported: gsutil or curl.
+export ISTIO_DOWNLOAD_METHOD=gsutil
+# Configure the URL to download Istio release.
+# If ISTIO_DOWNLOAD_METHOD=curl, an example value can look like
+# https://storage.googleapis.com/gke-release/asm/istio-1.5.6-asm.0-linux.tar.gz.
+# If ISTIO_DOWNLOAD_METHOD=gsutil, an example value can look like
+# gs://asm-staging-images/asm/istio-1.5.6-asm.0-linux.tar.gz.
+# As istio-1.6.0-asm.0-linux.tar.gz has not been released yet,
+# when testing istio-1.6.0-asm.0-linux.tar.gz,
+# istio-1.6.0-asm.0-linux.tar.gz is copied using gsutil from gs://asm-staging-images.
+export ISTIO_RELEASE_URL=gs://asm-staging-images/asm/istio-release-1.6-asm-18-linux-amd64.tar.gz
+# Configure the Istio release package name.
+# An example is istio-1.5.6-asm.0-linux.tar.gz
+export ISTIO_RELEASE_PKG=istio-release-1.6-asm-18-linux-amd64.tar.gz
+# Configure the Istio release name, which should be configured to be
+# the same as the directory name after unzipping ISTIO_RELEASE_PKG.
+# For example, if unzipping the release pkg istio-1.5.6-asm.0-linux.tar.gz
+# results in the directory istio-1.5.6-asm.0,
+# ISTIO_RELEASE_NAME should be configured as istio-1.5.6-asm.0.
+export ISTIO_RELEASE_NAME=istio-release-1.6-asm-18
