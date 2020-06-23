@@ -212,3 +212,6 @@ do
   helloworld.authz-ns1:5000/hello; echo
 done
 # Example output: "RBAC: access denied"
+
+# Clean up the resources created for the demo
+./cleanup_authz_security_demo.sh
