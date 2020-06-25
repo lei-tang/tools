@@ -123,5 +123,5 @@ kubectl exec --context=${CTX_2} -n sample -c sleep \
   app=sleep -o jsonpath='{.items[0].metadata.name}') -- curl \
   http://httpbin.sample:8000/headers -s
 
-# Clean up the resources created for the demo
-./cleanup_mtls_security_demo.sh
+# Clean up the resources created for the demo and deploy the services for authz demo
+./cleanup_mtls_security_demo.sh; ./deploy_authz_demo.sh
