@@ -37,23 +37,37 @@ set -x
 WD=$(dirname "$0")
 WD=$(cd "$WD"; pwd)
 mkdir -p ${WD}/asm-example-svc
-cd ${WD}/asm-example-svc
+pushd ${WD}/asm-example-svc
 pwd
-# Download package that contains example service deployment files.
-# Here Istio is istio-1.5.2-asm.0-linux.tar.gz. If you are testing
-# a different Istio release, you need to change the version of Istio release.
-# gsutil cp gs://asm-staging-images/asm/istio-1.5.2-asm.0-linux.tar.gz .
-tar xzf istio-1.5.2-asm.0-linux.tar.gz
-export ISTIO=${WD}/asm-example-svc/istio-1.5.2-asm.0
 
-if [[ -z "${PROJECT_ID}" || -z "${MASTER_NAME01}" || -z "${MASTER_NAME02}" || -z "${MASTER_LOCATION01}" || -z "${MASTER_LOCATION02}" ]]; then
-    echo "Error: PROJECT_ID, MASTER_NAME01, MASTER_NAME02, MASTER_LOCATION01, MASTER_LOCATION02 must be set."
+# Download package that contains example service deployment files.
+if [[ "$ISTIO_DOWNLOAD_METHOD" == "gsutil" ]]; then
+    echo "Download $ISTIO_RELEASE_URL using gsutil"
+    gsutil cp "$ISTIO_RELEASE_URL" .
+elif [[ "$ISTIO_DOWNLOAD_METHOD" == "curl" ]]; then
+    echo "Download $ISTIO_RELEASE_URL using curl"
+    curl -LO "${ISTIO_RELEASE_URL}"
+else
+    echo "Exit due to invalid Istio download method: ${ISTIO_DOWNLOAD_METHOD}."
     exit 1
 fi
-export CTX_1=gke_${PROJECT_ID}_${MASTER_LOCATION01}_${MASTER_NAME01}
-export CTX_2=gke_${PROJECT_ID}_${MASTER_LOCATION02}_${MASTER_NAME02}
-gcloud container clusters get-credentials ${MASTER_NAME01} --zone ${MASTER_LOCATION01} --project ${PROJECT_ID}
-gcloud container clusters get-credentials ${MASTER_NAME02} --zone ${MASTER_LOCATION02} --project ${PROJECT_ID}
+tar xzf "${ISTIO_RELEASE_PKG}"
+export ISTIO=${WD}/asm-example-svc/"${ISTIO_RELEASE_NAME}"
+if [ -d "$ISTIO" ]; then
+    echo "The Istio pkg is unzipped into ${ISTIO}."
+else
+    echo "Exit due to the error: the directory ${ISTIO} not found."
+    exit 1
+fi
+
+if [[ -z "${PROJECT_ID}" || -z "${CLUSTER_1}" || -z "${CLUSTER_2}" || -z "${LOCATION_1}" || -z "${LOCATION_2}" ]]; then
+    echo "Error: PROJECT_ID, CLUSTER_1, CLUSTER_2, LOCATION_1, LOCATION_2 must be set."
+    exit 1
+fi
+export CTX_1=gke_${PROJECT_ID}_${LOCATION_1}_${CLUSTER_1}
+export CTX_2=gke_${PROJECT_ID}_${LOCATION_2}_${CLUSTER_2}
+gcloud container clusters get-credentials ${CLUSTER_1} --zone ${LOCATION_1} --project ${PROJECT_ID}
+gcloud container clusters get-credentials ${CLUSTER_2} --zone ${LOCATION_2} --project ${PROJECT_ID}
 
 # In cluster 1 and 2, create namespaces authz-ns1 and authz-ns2. In cluster 1 and 2, deploy helloworld and sleep services in namespaces authz-ns1 and authz-ns2.
 kubectl create --context=${CTX_1} namespace authz-ns1
@@ -90,6 +104,8 @@ kubectl apply --context=${CTX_2} \
 # of cluster 1 and 2 are ready. If they are not ready
 # (e.g., due to resource limits), recreate them.
 waitForPodsInContextReady authz-ns1 ${CTX_1} "2/2"
+waitForPodsInContextReady authz-ns2 ${CTX_1} "2/2"
+waitForPodsInContextReady authz-ns1 ${CTX_2} "2/2"
 waitForPodsInContextReady authz-ns2 ${CTX_2} "2/2"
 
 # Verify sleep in authz-ns1 of cluster 1 can reach the helloworld
@@ -177,9 +193,9 @@ spec:
   {}
 EOF
 
-# Wait 90 seconds for the policies to take effect.
-echo "Wait 90 seconds for the policies to take effect."
-sleep 90
+# Wait 60 seconds for the policies to take effect.
+echo "Wait 60 seconds for the policies to take effect."
+sleep 60
 
 # Verify traffic from sleep in authz-ns1 of cluster 1 to helloworld.authz-ns2 is denied.
 verifyResponses 5 0 "RBAC: access denied" kubectl exec --context=${CTX_1} -it -n authz-ns1 -c sleep \
@@ -222,9 +238,9 @@ spec:
   {}
 EOF
 
-# Wait 90 seconds for the policies to take effect.
-echo "Wait 90 seconds for the policies to take effect."
-sleep 90
+# Wait 60 seconds for the policies to take effect.
+echo "Wait 60 seconds for the policies to take effect."
+sleep 60
 
 # Verify traffic from sleep in authz-ns2 of cluster 2 to helloworld.authz-ns1 is denied.
 verifyResponses 5 0 "RBAC: access denied" kubectl exec --context=${CTX_2} -it -n authz-ns2 -c sleep \
@@ -237,3 +253,7 @@ verifyResponses 5 0 "RBAC: access denied" kubectl exec --context=${CTX_1} -it -n
   $(kubectl get pod --context=${CTX_1} -n authz-ns1 -l \
   app=sleep -o jsonpath='{.items[0].metadata.name}') -- curl \
   helloworld.authz-ns1:5000/hello
+
+# Clean up the resources created after the tests
+popd
+source ./cleanup_authz_security_tests.sh
