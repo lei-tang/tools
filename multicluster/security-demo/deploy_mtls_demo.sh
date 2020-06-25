@@ -44,8 +44,8 @@ pwd
 
 # Download package that contains example service deployment files.
 # If you are testing a different ASM release, please replace the ASM release URL accordingly.
-gsutil cp gs://asm-staging-images/asm/istio-release-1.6-asm-17-linux-amd64.tar.gz .
-tar xzf istio-release-1.6-asm-17-linux-amd64.tar.gz
+#gsutil cp gs://asm-staging-images/asm/istio-release-1.6-asm-17-linux-amd64.tar.gz .
+#tar xzf istio-release-1.6-asm-17-linux-amd64.tar.gz
 export ISTIO=$(pwd)/istio-release-1.6-asm-17
 
 if [[ -z "${PROJECT_ID}" || -z "${CLUSTER_1}" || -z "${CLUSTER_2}" || -z "${LOCATION_1}" || -z "${LOCATION_2}" ]]; then
