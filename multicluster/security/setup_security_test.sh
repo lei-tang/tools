@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
 
 # Copyright 2020 Istio Authors
 
@@ -18,23 +18,34 @@
 # based on your multicluster installations (e.g., project, clusters, etc).
 
 # Configure your multicluster project ID, in which you have
-# installed Istio master+master multicluster.
+# installed Istio multicluster, e.g., my-gcp-multicluster-project-name.
+# TODO: change to "export PROJECT_ID=YOUR-PROJECT-NAME"
 export PROJECT_ID=lt-multicluster-t1-6-16-2020
-# Configure the first cluster name in your multicluster project.
+# Configure the name of the first cluster in your multicluster project,
+# e.g., primary01.
+# TODO: change to "export CLUSTER_1=YOUR-CLUSTER-NAME-1"
 export CLUSTER_1=master01
-# Configure the first cluster location in your multicluster project.
+# Configure the location of the first cluster in your multicluster project,
+# e.g., us-central1-a.
+# TODO: change to "export LOCATION_1=YOUR-CLUSTER-LOCATION-1"
 export LOCATION_1=us-central1-a
-# Configure the second cluster name in your multicluster project.
+# Configure the name of the second cluster in your multicluster project,
+# e.g., primary02.
+# TODO: change to "export CLUSTER_2=YOUR-CLUSTER-NAME-2"
 export CLUSTER_2=master02
-# Configure the second cluster location in your multicluster project.
+# Configure the location of the second cluster in your multicluster project,
+# e.g., us-central1-a.
+# TODO: change to "export LOCATION_2=YOUR-CLUSTER-LOCATION-2"
 export LOCATION_2=us-central1-a
 
 # Configure the download method for Istio release.
 # Two methods are supported: gsutil or curl.
+# TODO: use curl to download istio-1.6.4-asm.9-linux-amd64.tar.gz from public release link.
 export ISTIO_DOWNLOAD_METHOD=gsutil
 # Configure the URL to download Istio release.
 # If ISTIO_DOWNLOAD_METHOD=curl, an example value can look like
 # https://storage.googleapis.com/gke-release/asm/istio-1.5.6-asm.0-linux.tar.gz.
+# TODO: change the example gs://asm-staging-images to "gs://YOUR-GOOGLE-STORAGE-LINK-FOR-ISTIO-RELEASE".
 # If ISTIO_DOWNLOAD_METHOD=gsutil, an example value can look like
 # gs://asm-staging-images/asm/istio-1.5.6-asm.0-linux.tar.gz.
 # As istio-1.6.0-asm.0-linux.tar.gz has not been released yet,

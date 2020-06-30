@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
 
 # Copyright 2020 Istio Authors
 
@@ -14,8 +14,12 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-source ./setup_security_test.sh
-source ./util/util.sh
+WD=$(dirname "$0")
+WD=$(cd "$WD" || exit; pwd)
+# shellcheck disable=SC1090
+source "${WD}/setup_security_test.sh"
+# shellcheck disable=SC1090
+source "${WD}/util/util.sh"
 
 # Before running the security tests in this script:
 # 1) The master+master control planes should have been installed in two clusters
@@ -36,8 +40,8 @@ set -x
 
 WD=$(dirname "$0")
 WD=$(cd "$WD"; pwd)
-mkdir -p ${WD}/asm-example-svc
-pushd ${WD}/asm-example-svc
+mkdir -p "${WD}/asm-example-svc"
+pushd "${WD}/asm-example-svc"
 pwd
 
 # Download package that contains example service deployment files.
@@ -66,45 +70,45 @@ if [[ -z "${PROJECT_ID}" || -z "${CLUSTER_1}" || -z "${CLUSTER_2}" || -z "${LOCA
 fi
 export CTX_1=gke_${PROJECT_ID}_${LOCATION_1}_${CLUSTER_1}
 export CTX_2=gke_${PROJECT_ID}_${LOCATION_2}_${CLUSTER_2}
-gcloud container clusters get-credentials ${CLUSTER_1} --zone ${LOCATION_1} --project ${PROJECT_ID}
-gcloud container clusters get-credentials ${CLUSTER_2} --zone ${LOCATION_2} --project ${PROJECT_ID}
+gcloud container clusters get-credentials "${CLUSTER_1}" --zone "${LOCATION_1}" --project "${PROJECT_ID}"
+gcloud container clusters get-credentials "${CLUSTER_2}" --zone "${LOCATION_2}" --project "${PROJECT_ID}"
 
 # Deploy helloworld and sleep services under master+master control planes.
-kubectl create --context=${CTX_1} namespace sample
-kubectl label --context=${CTX_1} namespace sample \
+kubectl create --context="${CTX_1}" namespace sample
+kubectl label --context="${CTX_1}" namespace sample \
   istio-injection=enabled
-kubectl create --context=${CTX_2} namespace sample
-kubectl label --context=${CTX_2} namespace sample \
+kubectl create --context="${CTX_2}" namespace sample
+kubectl label --context="${CTX_2}" namespace sample \
   istio-injection=enabled
-kubectl create --context=${CTX_1} \
-  -f ${ISTIO}/samples/helloworld/helloworld.yaml -n sample
-kubectl create --context=${CTX_2} \
-  -f ${ISTIO}/samples/helloworld/helloworld.yaml -n sample
-kubectl apply --context=${CTX_1} \
-  -f ${ISTIO}/samples/sleep/sleep.yaml -n sample
-kubectl apply --context=${CTX_2} \
-  -f ${ISTIO}/samples/sleep/sleep.yaml -n sample
+kubectl create --context="${CTX_1}" \
+  -f "${ISTIO}"/samples/helloworld/helloworld.yaml -n sample
+kubectl create --context="${CTX_2}" \
+  -f "${ISTIO}"/samples/helloworld/helloworld.yaml -n sample
+kubectl apply --context="${CTX_1}" \
+  -f "${ISTIO}"/samples/sleep/sleep.yaml -n sample
+kubectl apply --context="${CTX_2}" \
+  -f "${ISTIO}"/samples/sleep/sleep.yaml -n sample
 
 # Verify the helloworld and sleep deployments are ready
-waitForPodsInContextReady sample ${CTX_1} "2/2"
-waitForPodsInContextReady sample ${CTX_2} "2/2"
+waitForPodsInContextReady sample "${CTX_1}" "2/2"
+waitForPodsInContextReady sample "${CTX_2}" "2/2"
 
 # Verify cross-cluster load balancing from cluster 1.
 # The response set should include those from 4 instances in all clusters.
-verifyResponseSet 10 0 4 kubectl exec --context=${CTX_1} -it -n sample -c sleep \
-  $(kubectl get pod --context=${CTX_1} -n sample -l \
+verifyResponseSet 10 0 4 kubectl exec --context="${CTX_1}" -it -n sample -c sleep \
+  $(kubectl get pod --context="${CTX_1}" -n sample -l \
   app=sleep -o jsonpath='{.items[0].metadata.name}') -- curl \
   helloworld.sample:5000/hello
 
 # Verify cross-cluster load balancing from cluster 2
 # The response set should include those from 4 instances in all clusters.
-verifyResponseSet 10 0 4 kubectl exec --context=${CTX_2} -it -n sample -c sleep \
-  $(kubectl get pod --context=${CTX_2} -n sample -l \
+verifyResponseSet 10 0 4 kubectl exec --context="${CTX_2}" -it -n sample -c sleep \
+  $(kubectl get pod --context="${CTX_2}" -n sample -l \
   app=sleep -o jsonpath='{.items[0].metadata.name}') -- curl \
   helloworld.sample:5000/hello
 
 # Deploy mTLS strict policy for cluster 1 and 2
-kubectl apply --context=$CTX_1 -f - <<EOF
+kubectl apply --context="${CTX_1}" -f - <<EOF
 apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
@@ -115,7 +119,7 @@ spec:
     mode: STRICT
 EOF
 
-kubectl apply --context=$CTX_2 -f - <<EOF
+kubectl apply --context="${CTX_2}" -f - <<EOF
 apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
@@ -133,14 +137,14 @@ sleep 60
 # Do not exit immediately for non zero status
 set +e
 # Confirm that plain-text requests fail as mutual TLS is required for helloworld with the following command.
-verifyResponses 5 0 "command terminated with exit code 56" kubectl exec --context=$CTX_1 \
-  $(kubectl get --context=$CTX_1 pod -n sample -l app=sleep -o jsonpath={.items..metadata.name})\
+verifyResponses 5 0 "command terminated with exit code 56" kubectl exec --context="${CTX_1}" \
+  $(kubectl get --context="${CTX_1}" pod -n sample -l app=sleep -o jsonpath={.items..metadata.name})\
    -n sample -c istio-proxy -- curl -s helloworld.sample:5000/hello
 # Exit immediately for non zero status
 set -e
 
 # Configure the DestinationRule in cluster 1 to use mutual TLS.
-kubectl apply --context=$CTX_1 -f - <<EOF
+kubectl apply --context="${CTX_1}" -f - <<EOF
 apiVersion: "networking.istio.io/v1alpha3"
 kind: "DestinationRule"
 metadata:
@@ -153,7 +157,7 @@ spec:
       mode: ISTIO_MUTUAL
 EOF
 # Configure the DestinationRule in cluster 2 to use mutual TLS.
-kubectl apply --context=$CTX_2 -f - <<EOF
+kubectl apply --context="${CTX_2}" -f - <<EOF
 apiVersion: "networking.istio.io/v1alpha3"
 kind: "DestinationRule"
 metadata:
@@ -167,10 +171,10 @@ spec:
 EOF
 
 # To prepare for testing certificates and mTLS, deploy httpbin in cluster 1 and 2.
-kubectl apply --context=${CTX_1} \
-  -f ${ISTIO}/samples/httpbin/httpbin.yaml -n sample
-kubectl apply --context=${CTX_2} \
-  -f ${ISTIO}/samples/httpbin/httpbin.yaml -n sample
+kubectl apply --context="${CTX_1}" \
+  -f "${ISTIO}"/samples/httpbin/httpbin.yaml -n sample
+kubectl apply --context="${CTX_2}" \
+  -f "${ISTIO}"/samples/httpbin/httpbin.yaml -n sample
 
 # Sleep 60 seconds for the DestinationRule and httpbin deployments to take effect.
 echo "Wait 60 seconds for the DestinationRule and httpbin deployments to take effect."
@@ -178,37 +182,38 @@ sleep 60
 
 # Under mTLS, verify cross-cluster load balancing from cluster 1.
 # The response set should include those from 4 instances in all clusters.
-verifyResponseSet 10 0 4 kubectl exec --context=${CTX_1} -it -n sample -c sleep \
-  $(kubectl get pod --context=${CTX_1} -n sample -l \
+verifyResponseSet 10 0 4 kubectl exec --context="${CTX_1}" -it -n sample -c sleep \
+  $(kubectl get pod --context="${CTX_1}" -n sample -l \
   app=sleep -o jsonpath='{.items[0].metadata.name}') -- curl \
   helloworld.sample:5000/hello
 
 # Under mTLS, verify cross-cluster load balancing from cluster 2.
 # The response set should include those from 4 instances in all clusters.
-verifyResponseSet 10 0 4 kubectl exec --context=${CTX_2} -it -n sample -c sleep \
-  $(kubectl get pod --context=$CTX_2 -n sample -l \
+verifyResponseSet 10 0 4 kubectl exec --context="${CTX_2}" -it -n sample -c sleep \
+  $(kubectl get pod --context="${CTX_2}" -n sample -l \
   app=sleep -o jsonpath='{.items[0].metadata.name}') -- curl \
   helloworld.sample:5000/hello
 
 # Verify the httpbin, helloworld, and sleep deployments are ready
-waitForPodsInContextReady sample ${CTX_1} "2/2"
-waitForPodsInContextReady sample ${CTX_2} "2/2"
+waitForPodsInContextReady sample "${CTX_1}" "2/2"
+waitForPodsInContextReady sample "${CTX_2}" "2/2"
 
 # Test certificates and mTLS from sleep in cluster 1 to httpbin.
 # The presence of the X-Forwarded-Client-Cert header shows that the certificate and mutual TLS are used.
-verifyResponses 5 0 "X-Forwarded-Client-Cert" kubectl exec --context=${CTX_1} -n sample -c sleep \
-  $(kubectl get --context=${CTX_1} pod -n sample -l \
+verifyResponses 5 0 "X-Forwarded-Client-Cert" kubectl exec --context="${CTX_1}" -n sample -c sleep \
+  $(kubectl get --context="${CTX_1}" pod -n sample -l \
   app=sleep -o jsonpath='{.items[0].metadata.name}') -- curl \
   http://httpbin.sample:8000/headers -s
 
 # Test certificates and mTLS from sleep in cluster 2 to httpbin.
 # The presence of the X-Forwarded-Client-Cert header shows that the certificate and mutual TLS are used.
-verifyResponses 5 0 "X-Forwarded-Client-Cert" kubectl exec --context=${CTX_2} -n sample -c sleep \
-  $(kubectl get --context=${CTX_2} pod -n sample -l \
+verifyResponses 5 0 "X-Forwarded-Client-Cert" kubectl exec --context="${CTX_2}" -n sample -c sleep \
+  $(kubectl get --context="${CTX_2}" pod -n sample -l \
   app=sleep -o jsonpath='{.items[0].metadata.name}') -- curl \
   http://httpbin.sample:8000/headers -s
 
 # Clean up the resources created after the tests
 popd
-source ./cleanup_mtls_security_tests.sh
+# shellcheck disable=SC1090
+source "${WD}/cleanup_mtls_security_tests.sh"
 

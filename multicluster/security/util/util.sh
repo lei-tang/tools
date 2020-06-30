@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Copyright 2020 Istio Authors
 
@@ -30,23 +30,23 @@ verifyResponseSet() {
     shift
     shift
     shift
-    while (( $n < ${runs} ))
+    while (( n < runs ))
     do
-      echo "RUNNING $*"
-      k=$("${@}")
-      vals["$k"]=1
-      if (( "${#vals[@]}" >= ${size} )); then
-        break
-      fi
-      n=$(( n+1 ))
-      echo "Tried $n times, sleeping ${sleep_sec} seconds and retrying..."
-      sleep "${sleep_sec}"
+        echo "RUNNING $*"
+        k=$("${@}")
+        vals["$k"]=1
+        if [[ ${#vals[@]} -ge ${size} ]]; then
+            break
+        fi
+        n=$(( n+1 ))
+        echo "Tried $n times, sleeping ${sleep_sec} seconds and retrying..."
+        sleep "${sleep_sec}"
     done
-    if (( $n == ${runs} ))
+    if (( n == runs ))
     then
-      die "$* does not have a response size ${size} after running ${runs} times."
+        exitWithErr "$* does not have a response size ${size} after running ${runs} times."
     fi
-    echo "Succeeded."
+    echo "Succeeded at $*"
 }
 
 # verifyResponses verify responses from
@@ -66,33 +66,33 @@ verifyResponses() {
     shift
     shift
 
-    while (( $n < ${runs} ))
+    while (( n < runs ))
     do
-      echo "RUNNING $*"
-      resp=$("${@}" 2>&1)
-      arr=()
-      while read -r line; do
-         arr+=("$line")
-      done <<< "$resp"
-      contain="false"
-      for line in "${arr[@]}"; do
-        if [[ ${line} = *"${exp_str}"* ]]; then
-          contain="true"
+        echo "RUNNING $*"
+        resp=$("${@}" 2>&1)
+        arr=()
+        while read -r line; do
+           arr+=("$line")
+        done <<< "$resp"
+        contain="false"
+        for line in "${arr[@]}"; do
+            if [[ ${line} = *"${exp_str}"* ]]; then
+                contain="true"
+            fi
+        done
+        if [[ "${contain}" = "false" ]]; then
+            break
         fi
-      done
-      if [[ "${contain}" = "false" ]]; then
-        break
-      fi
-      n=$(( n+1 ))
-      echo "Ran $n times, sleeping ${sleep_sec} seconds and run again..."
-      sleep "${sleep_sec}"
+        n=$(( n+1 ))
+        echo "Ran $n times, sleeping ${sleep_sec} seconds and run again..."
+        sleep "${sleep_sec}"
     done
 
-    if (( $n < ${runs} ))
+    if (( n < runs ))
     then
-      die "$* does not have expected response when running ${runs} times."
+        exitWithErr "$* does not have expected response when running ${runs} times."
     fi
-    echo "Succeeded."
+    echo "Succeeded at $*"
 }
 
 # Parameter 1: namespace
@@ -100,10 +100,13 @@ verifyResponses() {
 # Parameter 3: expected container running status (e.g., 1/1, 2/2, and etc).
 waitForPodsInContextReady() {
     echo "Waiting for pods to be ready in ${1} of context ${2} ..."
-    withRetriesMaxTime 600 10 _waitForPodsInContextReady "${1}" "${2}" "${3}"
+    retryCmd 10 600 _waitForPodsInContextReady "${1}" "${2}" "${3}"
     echo "All pods ready."
 }
 
+# Parameter 1: namespace
+# Parameter 2: cluster context
+# Parameter 3: expected container running status (e.g., 1/1, 2/2, and etc).
 _waitForPodsInContextReady() {
     pods_str=$(kubectl -n "${1}" --context="${2}" get pods | tail -n +2 )
     arr=()
@@ -125,21 +128,33 @@ _waitForPodsInContextReady() {
     return 1
 }
 
-# withRetriesMaxTime retries the given command repeatedly with ${2} sleep between retries until ${1} seconds have elapsed.
-# e.g. withRetries 300 60 myFunc param1 param2
-#   runs "myFunc param1 param2" for up 300 seconds with 60 sec sleep in between.
-withRetriesMaxTime() {
-    local total_time_max=${1}
-    local sleep_sec=${2}
-    local start_time=${SECONDS}
+# retryCmd runs a given command with retries.
+# Parameter 1: retry interval.
+# Parameter 2: max retry time.
+# Parameter 3: command to run
+# For example, "retryCmd 1 10 cmd cmdParam1" will run "cmd cmdParam1" with 1 second interval until
+# either the cmd succeeds or 10 seconds have reached.
+retryCmd() {
+    local retry_interval=${1}
+    local max_retry_time=${2}
     shift
     shift
-    while (( SECONDS - start_time <  total_time_max )); do
-      echo "RUNNING $*" ; "${@}" && break
-      echo "Failed, sleeping ${sleep_sec} seconds and retrying..."
-      sleep "${sleep_sec}"
+
+    local first_time=${SECONDS}
+    while (( SECONDS - first_time <  max_retry_time )); do
+        echo "Run $*"
+        "${@}" && break
+        echo "Retry after ${retry_interval} seconds ..."
+        sleep "${retry_interval}"
     done
 
-    if (( SECONDS - start_time >=  total_time_max )); then die "$* failed after retrying for ${total_time_max} seconds."; fi
-    echo "Succeeded."
+    if (( SECONDS - first_time >=  max_retry_time )); then
+        exitWithErr "$* failed with retry ${max_retry_time} seconds."
+    fi
+    echo "Succeeded at $*"
+}
+
+# Output error message and exit.
+exitWithErr() {
+    echo "$*" 1>&2 ; exit 1;
 }

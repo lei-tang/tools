@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
 
 # Copyright 2020 Istio Authors
 
@@ -14,7 +14,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-source ./setup_security_test.sh
+WD=$(dirname "$0")
+WD=$(cd "$WD" || exit; pwd)
+# shellcheck disable=SC1090
+source "${WD}/setup_security_test.sh"
 
 # Check unset variables
 set -u
@@ -27,9 +30,9 @@ if [[ -z "${PROJECT_ID}" || -z "${CLUSTER_1}" || -z "${CLUSTER_2}" || -z "${LOCA
 fi
 export CTX_1=gke_${PROJECT_ID}_${LOCATION_1}_${CLUSTER_1}
 export CTX_2=gke_${PROJECT_ID}_${LOCATION_2}_${CLUSTER_2}
-gcloud container clusters get-credentials ${CLUSTER_1} --zone ${LOCATION_1} --project ${PROJECT_ID}
-gcloud container clusters get-credentials ${CLUSTER_2} --zone ${LOCATION_2} --project ${PROJECT_ID}
+gcloud container clusters get-credentials "${CLUSTER_1}" --zone "${LOCATION_1}" --project "${PROJECT_ID}"
+gcloud container clusters get-credentials "${CLUSTER_2}" --zone "${LOCATION_2}" --project "${PROJECT_ID}"
 
 # Cleanup
-kubectl delete --context=${CTX_1} namespace sample
-kubectl delete --context=${CTX_2} namespace sample
+kubectl delete --context="${CTX_1}" namespace sample
+kubectl delete --context="${CTX_2}" namespace sample
