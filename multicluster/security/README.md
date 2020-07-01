@@ -15,10 +15,16 @@ Enter the directory containing the tests.
 
 Configure *setup_security_test.sh* based on your multi-cluster installation.
 
-## To run the tests for mTLS authentication policies and certificates in multi-cluster:
+## To run the tests for strict mTLS authentication policies and certificates in multi-cluster:
 
     ```bash
-    ./run_mtls_security_tests.sh
+    ./run_strict_mtls_security_tests.sh
+    ```
+    
+## To run the tests for auto mTLS authentication and certificates in multi-cluster:
+
+    ```bash
+    ./run_auto_mtls_security_tests.sh
     ```
     
 ## To run the tests for authorization policies in multi-cluster:

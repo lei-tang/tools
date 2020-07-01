@@ -22,7 +22,7 @@ source "${WD}/setup_security_test.sh"
 source "${WD}/util/util.sh"
 
 # Before running the security tests in this script:
-# 1) The master+master control planes should have been installed in two clusters
+# 1) The multicluster control planes should have been installed in two clusters
 # with contexts ${CTX_1} and ${CTX_2}, respectively. ${CTX_1} and ${CTX_2} are
 # defined in the script.
 # 2) The authentication for the project hosting the two clusters should have been conducted successfully, e.g., through
