@@ -19,19 +19,19 @@
 
 # Configure your multicluster project ID, in which you have
 # installed Istio multicluster.
-export PROJECT_ID=YOUR-PROJECT-ID
+export PROJECT_ID=lt-multicluster-t1-6-16-2020
 # Configure the name of the first cluster in your multicluster project,
 # e.g., primary01.
-export CLUSTER_1=NAME-OF-YOUR-CLUSTER-1
+export CLUSTER_1=master01
 # Configure the location of the first cluster in your multicluster project,
 # e.g., us-central1-a.
-export LOCATION_1=LOCATION-OF-YOUR-CLUSTER-1
+export LOCATION_1=us-central1-a
 # Configure the name of the second cluster in your multicluster project,
 # e.g., primary02.
-export CLUSTER_2=NAME-OF-YOUR-CLUSTER-1
+export CLUSTER_2=master02
 # Configure the location of the second cluster in your multicluster project,
 # e.g., us-central1-a.
-export LOCATION_2=LOCATION-OF-YOUR-CLUSTER-1
+export LOCATION_2=us-central1-a
 
 # Configure the download method for Istio release.
 # Two methods are supported: curl or gsutil.
