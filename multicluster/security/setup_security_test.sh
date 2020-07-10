@@ -35,18 +35,22 @@ export LOCATION_2=us-central1-a
 
 # Configure the download method for Istio release.
 # Two methods are supported: curl or gsutil.
-export ISTIO_DOWNLOAD_METHOD=curl
+# export ISTIO_DOWNLOAD_METHOD=curl
+export ISTIO_DOWNLOAD_METHOD=gsutil
 # Configure the URL to download Istio release.
 # If ISTIO_DOWNLOAD_METHOD=curl, an example value can look like
 # https://storage.googleapis.com/gke-release/asm/istio-1.6.4-asm.9-linux-amd64.tar.gz.
 # If ISTIO_DOWNLOAD_METHOD=gsutil, an example value can look like
 # gs://YOUR-GOOGLE-STORAGE-LINK-FOR-ISTIO-RELEASE.
-export ISTIO_RELEASE_URL=https://storage.googleapis.com/gke-release/asm/istio-1.6.4-asm.9-linux-amd64.tar.gz
+#export ISTIO_RELEASE_URL=https://storage.googleapis.com/gke-release/asm/istio-1.6.4-asm.9-linux-amd64.tar.gz
+export ISTIO_RELEASE_URL=gs://asm-staging-images/asm/istio-1.6.5-asm.1-linux-amd64.tar.gz
 # Configure the Istio release package name, e.g., istio-1.6.4-asm.9-linux-amd64.tar.gz.
-export ISTIO_RELEASE_PKG=istio-1.6.4-asm.9-linux-amd64.tar.gz
+#export ISTIO_RELEASE_PKG=istio-1.6.4-asm.9-linux-amd64.tar.gz
+export ISTIO_RELEASE_PKG=istio-1.6.5-asm.1-linux-amd64.tar.gz
 # Configure the Istio release name, which should be configured to be
 # the same as the directory name after unzipping ISTIO_RELEASE_PKG.
 # For example, if unzipping the release pkg istio-1.6.4-asm.9-linux-amd64.tar.gz
 # results in the directory istio-1.6.4-asm.9,
 # ISTIO_RELEASE_NAME should be configured as istio-1.6.4-asm.9.
-export ISTIO_RELEASE_NAME=istio-1.6.4-asm.9
+#export ISTIO_RELEASE_NAME=istio-1.6.4-asm.9
+export ISTIO_RELEASE_NAME=istio-1.6.5-asm.1
